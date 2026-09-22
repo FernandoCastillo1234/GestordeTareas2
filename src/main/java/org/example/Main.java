@@ -1,4 +1,6 @@
 package org.example;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -23,7 +25,9 @@ public class Main {
             System.out.println(" - 2. Ver lista de tareas  ");
             System.out.println(" - 3. Marcar tarea como completada  ");
             System.out.println(" - 4. Eliminar una tarea  ");
-            System.out.println(" - 5. Salir ");
+            System.out.println(" - 5. Filtrar tareas por prioridad  ");
+            System.out.println(" - 6. Guardar tareas en archivo de texto  ");
+            System.out.println(" - 7. Salir ");
             System.out.println("");
             System.out.print("Elige una opcion: ");
             opcion = scanner.nextInt();
@@ -34,7 +38,7 @@ public class Main {
                     System.out.print("Descripcion de la tarea: ");
                     String nuevaTarea = scanner.nextLine();
                     tareas.add("[ ] " + nuevaTarea);
-                    System.out.println("Tarea anadida.");
+                    System.out.println("Tarea añadida.");
                     break;
 
                 case 2:
@@ -61,13 +65,43 @@ public class Main {
                     break;
 
                 case 5:
+                    System.out.println("Selecciona una prioridad a filtar (Alta, Media, Baja):");
+                    String filtro = scanner.nextLine(). toUpperCase();
+                    System.out.println("-----Tareas con prioridad." + filtro +"----");
+                    boolean encontradas = false;
+                    for  (int i = 0; i < tareas.size(); i++){
+                        if(tareas.get(i).contains("[" +filtro + "]")){
+                            System.out.println((i + 1) + ". " + tareas.get(i));
+                            encontradas = true;
+                        }
+                    }
+                    if (!encontradas){
+                        System.out.println("No bhay tareas con esa prioridad");
+                    }
+                    break;
+
+                case 6:
+                    try{
+                        FileWriter writer = new FileWriter("Tareas.txt");
+                        for (String t : tareas) {
+                            writer.write(t + "\n");
+                        }
+                        writer.close();
+                        System.out.println("El listado se ha guardado correctamente en 'tareas.txt'.");
+                    } catch (IOException e){
+                        System.out.println("Hubo un error al guardar el archivo.");
+                    }
+                    break;
+
+
+                case 7:
                     System.out.println("Saliendo del programa...");
                     break;
 
                 default:
                 System.out.println("Opcion incorrecta.");
             }
-        } while (opcion != 5);
+        } while (opcion != 7);
         scanner.close();
     }
 }
